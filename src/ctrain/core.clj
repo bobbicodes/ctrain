@@ -1,47 +1,127 @@
 (ns ctrain.core
+  (:require [clojure.string :as s])
   (:gen-class))
 
-(def problems '({:_id 1 :title "Nothing but the Truth" :tests ["(= __ true)"], :description "This is a clojure form.  Enter a value which will make the form evaluate to true.  Don't over think it!  If you are confused, see the <a href='/directions'>getting started</a> page.  Hint: true is equal to true.", :tags ["elementary"]}
+(defn run-code
+  "Run the specified code-string against the test cases for the problem with the
+specified id.
+
+Return a map, {:message, :error, :url, :num-tests-passed}."
+  [id code]
+  (try
+    (let [{:keys [tests restricted] :as problem} (get-problem id)
+          sb-tester (get-tester restricted)
+          user-forms (s/join " " (map pr-str (read-string-safely code)))
+          devnull (java.io.StringWriter.) ;; TODO consider Apache Commons IO
+          results (if (empty? user-forms)
+                    ["Empty input is not allowed."]
+                    (for [test tests]
+                      (try
+                        (when-not (sb (->> user-forms
+                                           (s/replace test "__")
+                                           read-string-safely
+                                           first)
+                                      sb-tester
+                                      {#'*out* devnull
+                                       #'*err* devnull})
+                          "You failed the unit tests")
+                        (catch Throwable t (.getMessage t)))))
+          [passed [fail-msg]] (split-with nil? results)]
+      (assoc (if fail-msg
+               {:message "", :error fail-msg, :url *url*}
+               (mark-completed problem code))
+        :num-tests-passed (count passed)))
+    (catch Throwable t {:message "" :error (.getMessage t), :url *url*
+                        :num-tests-passed 0})))
+
+
+(def problems
+  [{:_id 1 :title "Nothing but the Truth"
+    :tests ["(= __ true)"],
+    :description "What is equal to true?"}
  
-{:_id 2 :title "Simple Math" :tests ["(= (- 10 (* 2 3)) __)"], :description "If you are not familiar with <a href='http://en.wikipedia.org/wiki/Polish_notation'>polish notation</a>, simple arithmetic might seem confusing.", :tags ["elementary"]}
+  {:_id 2 :title "Simple Math"
+   :tests ["(= (- 10 (* 2 3)) __)"]
+   :description "Functions can be nested."}
 
-{:_id 3 :title "Intro to Strings" :tests ["(= __ (.toUpperCase \"hello world\"))"], :description "Clojure strings are Java strings.  This means that you can use any of the Java string methods on Clojure strings.", :tags ["elementary"]}
+  {:_id 3 :title "Intro to Strings"
+   :tests ["(= __ (.toUpperCase \"hello world\"))"]
+   :description "Clojure strings are Java strings.  This means that you can use any of the Java string methods on Clojure strings."}
 
-{:_id 4 :title "Intro to Lists" :tests ["(= (list __) '(:a :b :c))"], :description "Lists can be constructed with either a function or a quoted form.", :tags ["elementary"]}
+  {:_id 4 :title "Intro to Lists"
+   :tests ["(= (list __) '(:a :b :c))"]
+   :description "Lists can be constructed with either a function or a quoted form."}
 
-{:_id 5 :title "Lists: conj" :tests ["(= __ (conj '(2 3 4) 1))" "(= __ (conj '(3 4) 2 1))"], :description "When operating on a list, the conj function will return a new list with one or more items \"added\" to the front.", :tags ["elementary"]}
+  {:_id 5 :title "Lists: conj"
+   :tests ["(= __ (conj '(2 3 4) 1))" "(= __ (conj '(3 4) 2 1))"]
+   :description "When operating on a list, the conj function will return a new list with one or more items \"added\" to the front."}
 
-{:_id 6 :title "Intro to Vectors" :tests ["(= [__] (list :a :b :c) (vec '(:a :b :c)) (vector :a :b :c))"], :description "Vectors can be constructed several ways.  You can compare them with lists.", :tags ["elementary"]}
+  {:_id 6 :title "Intro to Vectors"
+   :tests ["(= [__] (list :a :b :c) (vec '(:a :b :c)) (vector :a :b :c))"]
+   :description "Vectors can be constructed several ways.  You can compare them with lists."}
 
-{:_id 7 :title "Vectors: conj" :tests ["(= __ (conj [1 2 3] 4))" "(= __ (conj [1 2] 3 4))"], :description "When operating on a Vector, the conj function will return a new vector with one or more items \"added\" to the end.", :tags ["elementary"]}
+  {:_id 7 :title "Vectors: conj"
+   :tests ["(= __ (conj [1 2 3] 4))" "(= __ (conj [1 2] 3 4))"]
+   :description "When operating on a Vector, the conj function will return a new vector with one or more items \"added\" to the end."}
 
-{:_id 8 :title "Intro to Sets" :tests ["(= __ (set '(:a :a :b :c :c :c :c :d :d)))" "(= __ (clojure.set/union #{:a :b :c} #{:b :c :d}))"], :description "Sets are collections of unique values.", :tags ["elementary"]}
+  {:_id 8 :title "Intro to Sets"
+   :tests ["(= __ (set '(:a :a :b :c :c :c :c :d :d)))" "(= __ (clojure.set/union #{:a :b :c} #{:b :c :d}))"]
+   :description "Sets are collections of unique values."}
 
-{:_id 9 :title "Sets: conj" :tests ["(= #{1 2 3 4} (conj #{1 4 3} __))"], :description "When operating on a set, the conj function returns a new set with one or more keys \"added\".", :tags ["elementary"]}
+{:_id 9 :title "Sets: conj"
+ :tests ["(= #{1 2 3 4} (conj #{1 4 3} __))"]
+ :description "When operating on a set, the conj function returns a new set with one or more keys \"added\"."}
 
-{:_id 10 :title "Intro to Maps" :tests ["(= __ ((hash-map :a 10, :b 20, :c 30) :b))" "(= __ (:b {:a 10, :b 20, :c 30}))"], :description "Maps store key-value pairs.  Both maps and keywords can be used as lookup functions. Commas can be used to make maps more readable, but they are not required.", :tags ["elementary"]}
+{:_id 10 :title "Intro to Maps"
+ :tests ["(= __ ((hash-map :a 10, :b 20, :c 30) :b))" "(= __ (:b {:a 10, :b 20, :c 30}))"]
+ :description "Maps store key-value pairs.  Both maps and keywords can be used as lookup functions. Commas are whitespace.}
 
-{:_id 11 :title "Maps: conj" :tests ["(= {:a 1, :b 2, :c 3} (conj {:a 1} __ [:c 3]))"], :description "When operating on a map, the conj function returns a new map with one or more key-value pairs \"added\".", :tags ["elementary"]}
+{:_id 11 :title "Maps: conj"
+ :tests ["(= {:a 1, :b 2, :c 3} (conj {:a 1} __ [:c 3]))"]
+ :description "When operating on a map, the conj function returns a new map with one or more key-value pairs \"added\"."}
 
-{:_id 12 :title "Intro to Sequences" :tests ["(= __ (first '(3 2 1)))" "(= __ (second [2 3 4]))" "(= __ (last (list 1 2 3)))"], :description "All Clojure collections support sequencing.  You can operate on sequences with functions like first, second, and last.", :tags ["elementary"]}
+{:_id 12 :title "Intro to Sequences"
+ :tests ["(= __ (first '(3 2 1)))" "(= __ (second [2 3 4]))" "(= __ (last (list 1 2 3)))"],
+ :description "All Clojure collections support sequencing.  You can operate on sequences with functions like first, second, and last."}
 
-{:_id 13 :title "Sequences: rest" :tests ["(= __ (rest [10 20 30 40]))"], :description "The rest function will return all the items of a sequence except the first.", :tags ["elementary"]}
+{:_id 13 :title "Sequences: rest"
+ :tests ["(= __ (rest [10 20 30 40]))"]
+ :description "The rest function will return all the items of a sequence except the first."}
 
-{:_id 14 :title "Intro to Functions" :tests ["(= __ ((fn add-five [x] (+ x 5)) 3))" "(= __ ((fn [x] (+ x 5)) 3))" "(= __ (#(+ % 5) 3))" "(= __ ((partial + 5) 3))"], :description "Clojure has many different ways to create functions.", :tags ["elementary"]}
+{:_id 14 :title "Intro to Functions"
+ :tests ["(= __ ((fn add-five [x] (+ x 5)) 3))" "(= __ ((fn [x] (+ x 5)) 3))" "(= __ (#(+ % 5) 3))" "(= __ ((partial + 5) 3))"]
+ :description "Clojure has many different ways to create functions."}
 
-{:_id 15 :title "Double Down" :tests ["(= (__ 2) 4)" "(= (__ 3) 6)" "(= (__ 11) 22)" "(= (__ 7) 14)"], :description "Write a function which doubles a number.", :tags ["elementary"]}
+{:_id 15 :title "Double Down"
+ :tests ["(= (__ 2) 4)" "(= (__ 3) 6)" "(= (__ 11) 22)" "(= (__ 7) 14)"]
+ :description "Write a function which doubles a number."}
 
-{:_id 16 :title "Hello World" :tests ["(= (__ \"Dave\") \"Hello, Dave!\")" "(= (__ \"Jenn\") \"Hello, Jenn!\")" "(= (__ \"Rhea\") \"Hello, Rhea!\")"], :description "Write a function which returns a personalized greeting.", :tags ["elementary"]}
+{:_id 16 :title "Hello World"
+ :tests ["(= (__ \"Dave\") \"Hello, Dave!\")" "(= (__ \"Jenn\") \"Hello, Jenn!\")" "(= (__ \"Rhea\") \"Hello, Rhea!\")"]
+ :description "Write a function which returns a personalized greeting."}
 
-{:_id 17 :title "Sequences: map" :tests ["(= __ (map #(+ % 5) '(1 2 3)))"], :description "The map function takes two arguments: a function (f) and a sequence (s).  Map returns a new sequence consisting of the result of applying f to each item of s.  Do not confuse the map function with the map data structure.", :tags ["elementary"]}
+{:_id 17 :title "Sequences: map"
+ :tests ["(= __ (map #(+ % 5) '(1 2 3)))"]
+ :description "The map function takes two arguments: a function (f) and a sequence (s).
+              Map returns a new sequence consisting of the result of applying f to each item of s.
+              Do not confuse the map function with the map data structure."}
 
-{:_id 18 :title "Sequences: filter" :tests ["(= __ (filter #(> % 5) '(3 4 5 6 7)))"], :description "The filter function takes two arguments: a predicate function (f) and a sequence (s).  Filter returns a new sequence consisting of all the items of s for which (f item) returns true.", :tags ["elementary"]}
+{:_id 18 :title "Sequences: filter"
+ :tests ["(= __ (filter #(> % 5) '(3 4 5 6 7)))"]
+ :description "The filter function takes two arguments: a predicate function (f) and a sequence (s).
+              Filter returns a new sequence consisting of all the items of s for which (f item) returns true."}
 
-{:_id 19 :restricted ["last"], :title "Last Element" :tests ["(= (__ [1 2 3 4 5]) 5)" "(= (__ '(5 4 3)) 3)" "(= (__ [\"b\" \"c\" \"d\"]) \"d\")"], :description "Write a function which returns the last element in a sequence.", :tags ["easy" "seqs" "core-functions"]}
+{:_id 19 :restricted ["last"], :title "Last Element"
+ :tests ["(= (__ [1 2 3 4 5]) 5)" "(= (__ '(5 4 3)) 3)" "(= (__ [\"b\" \"c\" \"d\"]) \"d\")"]
+:description "Write a function which returns the last element in a sequence."}
 
-{:_id 20 :title "Penultimate Element" :tests ["(= (__ (list 1 2 3 4 5)) 4)" "(= (__ [\"a\" \"b\" \"c\"]) \"b\")" "(= (__ [[1 2] [3 4]]) [1 2])"], :description "Write a function which returns the second to last element from a sequence.", :tags ["easy" "seqs"]}
+{:_id 20 :title "Penultimate Element"
+:tests ["(= (__ (list 1 2 3 4 5)) 4)" "(= (__ [\"a\" \"b\" \"c\"]) \"b\")" "(= (__ [[1 2] [3 4]]) [1 2])"]
+:description "Write a function which returns the second to last element from a sequence."}
 
-{:_id 21 :restricted ["nth"], :title "Nth Element" :tests ["(= (__ '(4 5 6 7) 2) 6)" "(= (__ [:a :b :c] 0) :a)" "(= (__ [1 2 3 4] 1) 2)" "(= (__ '([1 2] [3 4] [5 6]) 2) [5 6])"], :description "Write a function which returns the Nth element from a sequence.", :tags ["easy" "seqs" "core-functions"]}
+{:_id 21 :restricted ["nth"], :title "Nth Element"
+:tests ["(= (__ '(4 5 6 7) 2) 6)" "(= (__ [:a :b :c] 0) :a)" "(= (__ [1 2 3 4] 1) 2)" "(= (__ '([1 2] [3 4] [5 6]) 2) [5 6])"]
+:description "Write a function which returns the Nth element from a sequence."}
 
 {:_id 22 :restricted ["count"], :title "Count a Sequence" :tests ["(= (__ '(1 2 3 3 1)) 5)" "(= (__ \"Hello World\") 11)" "(= (__ [[1 2] [3 4] [5 6]]) 3)" "(= (__ '(13)) 1)" "(= (__ '(:a :b :c)) 3)"], :description "Write a function which returns the total number of elements in a sequence.", :tags ["easy" "seqs" "core-functions"]}
 
@@ -173,7 +253,7 @@
 
 {:_id 86 :title "Happy numbers" :tests ["(= (__ 7) true)" "(= (__ 986543210) true)" "(= (__ 2) false)" "(= (__ 3) false)"], :description "Happy numbers are positive integers that follow a particular formula: take each individual digit, square it, and then sum the squares to get a new number. Repeat with the new number and eventually, you might get to a number whose squared sum is 1. This is a happy number. An unhappy number (or sad number) is one that loops endlessly. Write a function that determines if a number is happy or not.", :tags ["easy" "math"]}
 
-{:_id 87 :title "Create an Equation" :tests ["(= (__ 3 4 7) '(= (+ 3 4) 7))" "(= (__ 3 4 12) '(= (* 3 4) 12))" "(= (__ 3 4 14) nil)" "(= (__ 3 4 5 35) '(= (* (+ 3 4) 5) 35))" "(= (__ 3 4 5 60) '(= (+ (* 3 4) 5) 60))" "(= (__ 3 4 5 23) '(= (+ 3 (* 4 5)) 23))" "(= (__ 3 4 5 27) '(= (* 3 (+ 4 5)) 27))" "(= (__ 3 4 5 6) nil)" "(= (__ 1 2 10 100 2001) '(= (+ 1 (* 2 10 100)) 2001)" "(= (__ 1 2 10 100 1300) '(= (* (+ 1 2 10) 100) 1300)"], :description "Write a function which takes three or more integers.  Using these integers, your function should generate clojure code representing an equation.  The following rules for the equation must be satisfied:\n\n    1. All integers must be used once and only once.\n    2. The order of the integers must be maintained when reading the equation left-to-right.\n    3. The only functions you may use are +, *, or =.\n    4. The equation must use the minimum number of parentheses.\n    5. If no satisfying equation exists, return nil.", :tags ["hard" "code-generation"]}))
+{:_id 87 :title "Create an Equation" :tests ["(= (__ 3 4 7) '(= (+ 3 4) 7))" "(= (__ 3 4 12) '(= (* 3 4) 12))" "(= (__ 3 4 14) nil)" "(= (__ 3 4 5 35) '(= (* (+ 3 4) 5) 35))" "(= (__ 3 4 5 60) '(= (+ (* 3 4) 5) 60))" "(= (__ 3 4 5 23) '(= (+ 3 (* 4 5)) 23))" "(= (__ 3 4 5 27) '(= (* 3 (+ 4 5)) 27))" "(= (__ 3 4 5 6) nil)" "(= (__ 1 2 10 100 2001) '(= (+ 1 (* 2 10 100)) 2001)" "(= (__ 1 2 10 100 1300) '(= (* (+ 1 2 10) 100) 1300)"], :description "Write a function which takes three or more integers.  Using these integers, your function should generate clojure code representing an equation.  The following rules for the equation must be satisfied:\n\n    1. All integers must be used once and only once.\n    2. The order of the integers must be maintained when reading the equation left-to-right.\n    3. The only functions you may use are +, *, or =.\n    4. The equation must use the minimum number of parentheses.\n    5. If no satisfying equation exists, return nil.", :tags ["hard" "code-generation"]}])
 
 (defn problem [n]
  (println (str (:title (nth problems (- n 1)))))
