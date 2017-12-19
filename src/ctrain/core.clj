@@ -243,10 +243,9 @@
 
 (defn prompt-prob
   []
-  (println "Enter a problem number. [1-87]")
-  (let [prob (Integer. (get-input 1))]
+  (loop [prob 1]
     (problem prob)
-    (prompt-prob)))
+    (recur (inc prob))))
 
 (defn -main
   [& args]
