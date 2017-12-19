@@ -2,39 +2,6 @@
   (:require [clojure.string :as s])
   (:gen-class))
 
-(defn run-code
-  "Run the specified code-string against the test cases for the problem with the
-specified id.
-
-Return a map, {:message, :error, :url, :num-tests-passed}."
-  [id code]
-  (try
-    (let [{:keys [tests restricted] :as problem} (get-problem id)
-          sb-tester (get-tester restricted)
-          user-forms (s/join " " (map pr-str (read-string-safely code)))
-          devnull (java.io.StringWriter.) ;; TODO consider Apache Commons IO
-          results (if (empty? user-forms)
-                    ["Empty input is not allowed."]
-                    (for [test tests]
-                      (try
-                        (when-not (sb (->> user-forms
-                                           (s/replace test "__")
-                                           read-string-safely
-                                           first)
-                                      sb-tester
-                                      {#'*out* devnull
-                                       #'*err* devnull})
-                          "You failed the unit tests")
-                        (catch Throwable t (.getMessage t)))))
-          [passed [fail-msg]] (split-with nil? results)]
-      (assoc (if fail-msg
-               {:message "", :error fail-msg, :url *url*}
-               (mark-completed problem code))
-        :num-tests-passed (count passed)))
-    (catch Throwable t {:message "" :error (.getMessage t), :url *url*
-                        :num-tests-passed 0})))
-
-
 (def problems
   [{:_id 1 :title "Nothing but the Truth"
     :tests ["(= __ true)"],
@@ -74,7 +41,7 @@ Return a map, {:message, :error, :url, :num-tests-passed}."
 
 {:_id 10 :title "Intro to Maps"
  :tests ["(= __ ((hash-map :a 10, :b 20, :c 30) :b))" "(= __ (:b {:a 10, :b 20, :c 30}))"]
- :description "Maps store key-value pairs.  Both maps and keywords can be used as lookup functions. Commas are whitespace.}
+ :description "Maps store key-value pairs.  Both maps and keywords can be used as lookup functions. Commas are whitespace."}
 
 {:_id 11 :title "Maps: conj"
  :tests ["(= {:a 1, :b 2, :c 3} (conj {:a 1} __ [:c 3]))"]
@@ -255,11 +222,6 @@ Return a map, {:message, :error, :url, :num-tests-passed}."
 
 {:_id 87 :title "Create an Equation" :tests ["(= (__ 3 4 7) '(= (+ 3 4) 7))" "(= (__ 3 4 12) '(= (* 3 4) 12))" "(= (__ 3 4 14) nil)" "(= (__ 3 4 5 35) '(= (* (+ 3 4) 5) 35))" "(= (__ 3 4 5 60) '(= (+ (* 3 4) 5) 60))" "(= (__ 3 4 5 23) '(= (+ 3 (* 4 5)) 23))" "(= (__ 3 4 5 27) '(= (* 3 (+ 4 5)) 27))" "(= (__ 3 4 5 6) nil)" "(= (__ 1 2 10 100 2001) '(= (+ 1 (* 2 10 100)) 2001)" "(= (__ 1 2 10 100 1300) '(= (* (+ 1 2 10) 100) 1300)"], :description "Write a function which takes three or more integers.  Using these integers, your function should generate clojure code representing an equation.  The following rules for the equation must be satisfied:\n\n    1. All integers must be used once and only once.\n    2. The order of the integers must be maintained when reading the equation left-to-right.\n    3. The only functions you may use are +, *, or =.\n    4. The equation must use the minimum number of parentheses.\n    5. If no satisfying equation exists, return nil.", :tags ["hard" "code-generation"]}])
 
-(defn problem [n]
- (println (str (:title (nth problems (- n 1)))))
-   (println (str (:description (nth problems (- n 1)))))
-  (run! println (:tests (nth problems (- n 1)))))
-
 (defn get-input
   "Waits for user to enter text and hit enter, then cleans the input"
   ([] (get-input ""))
@@ -268,6 +230,16 @@ Return a map, {:message, :error, :url, :num-tests-passed}."
        (if (empty? input)
          default
          (clojure.string/lower-case input)))))
+
+(defn replacer [n]
+  (let [ans (get-input)]
+  (str "=> " (eval (read-string (s/replace (first (:tests (nth problems (- n 1)))) "__" ans))))))
+
+(defn problem [n]
+ (println (str (:title (nth problems (- n 1)))))
+   (println (str (:description (nth problems (- n 1)))))
+  (run! println (:tests (nth problems (- n 1))))
+  (println (replacer n)))
 
 (defn prompt-prob
   []
@@ -278,7 +250,5 @@ Return a map, {:message, :error, :url, :num-tests-passed}."
 
 (defn -main
   [& args]
-  (println "Command-line Clojure Training App")
+  (println "Clojure Training App")
   (prompt-prob))
-
-
