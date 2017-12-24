@@ -1,36 +1,11 @@
 # ctrain
 
-FIXME: description
+I wanted to be able to run the problems on 4clojure without having to load a browser or even a desktop session, so I took the data and created a little text-based runner.
 
 ## Installation
 
-Download from http://example.com/FIXME.
+Simply clone this repository, assuming you have Java and Leiningen installed.
 
 ## Usage
 
-FIXME: explanation
-
-    $ java -jar ctrain-0.1.0-standalone.jar [args]
-
-## Options
-
-FIXME: listing of options this app accepts.
-
-## Examples
-
-...
-
-### Bugs
-
-...
-
-### Any Other Sections
-### That You Think
-### Might be Useful
-
-## License
-
-Copyright © 2017 FIXME
-
-Distributed under the Eclipse Public License either version 1.0 or (at
-your option) any later version.
+cd into project directory and type lein run.
