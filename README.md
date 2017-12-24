@@ -10,6 +10,6 @@ Simply clone this repository, assuming you have Java and Leiningen installed.
 
 cd into project directory and type lein run.
 
-## TODO
+## Data persistence
 
-Make it save your progress.
+When you answer a problem correctly, it increments the value stored in a file in the project root called "prob".
