@@ -1,8 +1,9 @@
 (ns ctrain.core
-  (:require [clojure.string :as s])
+  (:require [clojure.string :as s]
+	    [clojure.java.io :as io])
   (:gen-class))
 
-(load-file "/home/pi/ctrain/src/ctrain/problems.clj")
+(def problems (read-string (slurp (io/resource "problems"))))
 
 (defn get-input
   "Waits for user to enter text and hit enter, then cleans the input"
@@ -19,11 +20,9 @@
 
 (defn problem [n]
  (println (str (:title (nth problems (- n 1)))))
- (println "")
    (println (str (:description (nth problems (- n 1)))))
    (println "")
-  (run! println (:tests (nth problems (- n 1))))
-  (println "")
+  (println (first (:tests (nth problems (- n 1)))))
   (println (replacer n))
   (println ""))
 
@@ -35,12 +34,6 @@
 
 (defn -main
   [& args]
-  (println "")
-  (println "")
-  (println "")
- (println "")
-  (println "")
-  (println "")
   (println "")
   (println "Welcome to C-Train,")
   (println "Your very own Clojure Training App.")
