@@ -6,7 +6,6 @@
 (def problems (read-string (slurp (io/resource "problems"))))
 
 (defn get-input
-  "Waits for user to enter text and hit enter, then cleans the input"
   ([] (get-input ""))
   ([default]
      (let [input (s/trim (read-line))]
@@ -16,7 +15,10 @@
 
 (defn replacer [n]
   (let [ans (get-input)]
-  (str "=> " (eval (read-string (s/replace (first (:tests (nth problems (- n 1)))) "__" ans))))))
+  
+   (if (= true (eval (read-string (s/replace (first (:tests (nth problems (- n 1)))) "__" ans))))
+     (spit "prob" (inc n)) 
+  )))
 
 (defn problem [n]
  (println (str (:title (nth problems (- n 1)))))
@@ -28,9 +30,8 @@
 
 (defn prompt-prob
   []
-  (loop [prob 1]
-    (problem prob)
-    (recur (inc prob))))
+  (problem (read-string (slurp "prob")))
+(prompt-prob))
 
 (defn -main
   [& args]
