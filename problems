@@ -4,7 +4,7 @@
  
   {:_id 2 :title "Simple Math"
    :tests ["(= (- 10 (* 2 3)) __)"]
-   :description "Innermost functions are evaluated first."}
+   :description "Innermost forms are evaluated first."}
 
   {:_id 3 :title "Intro to Strings"
    :tests ["(= __ (.toUpperCase \"eat me\"))"]
