@@ -7,8 +7,7 @@
 
 (defn evaluator [n]
  (if (= true
-        (eval (read-string (s/replace
-        (first (:tests (nth problems (- n 1)))) "__" (read-line)))))
+        (eval (read-string (s/replace (first (:tests (nth problems (- n 1)))) "__" (read-line)))))
      (do
        (spit "prob" (inc n))
        (println "")
