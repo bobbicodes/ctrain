@@ -25,7 +25,5 @@
 
 (defn -main []
   (println "")
-  (println "Welcome to the Clojure Training App")
-  (println "")
   (problem (read-string (slurp "prob")))
   (-main))
