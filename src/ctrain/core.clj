@@ -1,45 +1,31 @@
 (ns ctrain.core
-  (:require [clojure.string :as s]
-	    [clojure.java.io :as io])
+  (:require [clojure.string :as s])
   (:gen-class))
 
-(def problems (read-string (slurp (io/resource "problems"))))
+(def problems
+  (read-string (slurp "problems")))
 
-(defn get-input
-  ([] (get-input ""))
-  ([default]
-     (let [input (s/trim (read-line))]
-       (if (empty? input)
-         default
-         input))))
-
-(defn replacer [n]
-  (let [ans (get-input)]
-  
-   (if (= true (eval (read-string (s/replace (first (:tests (nth problems (- n 1)))) "__" ans))))
-     (spit "prob" (inc n)) 
-  )))
+(defn evaluator [n]
+ (if (= true
+        (eval (read-string (s/replace
+        (first (:tests (nth problems (- n 1)))) "__" (read-line)))))
+     (do
+       (spit "prob" (inc n))
+       (println "")
+       (str "GOOD JOB"))))
 
 (defn problem [n]
- (println (str (:title (nth problems (- n 1)))))
+  (println (str (:title (nth problems (- n 1)))))
+  (println "")
    (println (str (:description (nth problems (- n 1)))))
    (println "")
   (println (first (:tests (nth problems (- n 1)))))
-  (println (replacer n))
+  (println (evaluator n))
   (println ""))
 
-(defn prompt-prob
-  []
+(defn -main []
+  (println "")
+  (Welcome to the Clojure Training App)
+  (println "")
   (problem (read-string (slurp "prob")))
-(prompt-prob))
-
-(defn -main
-  [& args]
-  (println "")
-  (println "Welcome to C-Train,")
-  (println "Your very own Clojure Training App.")
-  (println "")
-  (println "Enter a value to make the expression")
-  (println "evaluate as true.")
-  (println "")
-  (prompt-prob))
+  (-main))
