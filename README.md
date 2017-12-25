@@ -1,19 +1,15 @@
 # ctrain
 
-I wanted to be able to run the problems on 4clojure without having to load a browser or even a desktop session, so I took the data and created a little text-based runner. It only does the first test of each problem, for simplicity. 
-
-## Installation
-
-Simply clone this repository, assuming you have Java and Leiningen installed.
+Run the 4clojure problems without having to load a browser or even a desktop session
 
 ## Usage
 
-cd into project directory and type lein run.
+Clone repo, cd into ctrain directory and type lein run.
 When you answer a problem correctly, it increments the value stored in a file in the project root called "prob".
 
 ## Current bugs
 
-1. It actually evaluates the expressions you enter, so it will crash if you put in something that doesn't make sense.
+1. It actually evaluates the expressions you enter, so it will freak out if you put in something that doesn't make sense just as if you had entered it in a REPL and you wiil have to restart.
 
 2. For now it only does the first of the tests. While this does make it simpler, it may be completed in the future.
 
