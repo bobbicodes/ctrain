@@ -20,8 +20,7 @@
    (println (str (:description (nth problems (- n 1)))))
    (println "")
   (println (first (:tests (nth problems (- n 1)))))
-  (println (evaluator n))
-  (println ""))
+  (println (evaluator n)))
 
 (defn -main []
   (println "")
