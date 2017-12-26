@@ -1,6 +1,6 @@
 # ctrain
 
-Run the 4clojure problems without having to load a web browser or even a desktop session. Even do it over ssh!
+Run the 4clojure problems without having to load a graphical browser or desktop session. Even do it over ssh!
 
 ## Usage
 
@@ -13,6 +13,4 @@ When you answer a problem correctly, it stores its number in a file in the proje
 
 2. For now it only does the first of the tests. While I kinda like it because it makes it simpler, I probably ought to fix it.
 
-3. Many of the tests will pass if you enter a blank. This is actually correct, because the expression is indeed equal to itself!
-
-4. It has no concept of restricted functions in your answer. It's just a dirty free-for-all.
+3. It has no concept of restricted functions in your answer. It's just a dirty free-for-all.
