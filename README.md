@@ -4,7 +4,7 @@ Run the 4clojure problems without having to load a graphical browser or desktop 
 
 ## Usage
 
-Install Java and Leiningen if needed. Clone this repo and type lein run while in the ctrain directory.
+Install Java and [Leiningen](https://leiningen.org/) if needed. Clone this repo and type lein run while in the ctrain directory.
 When you answer a problem correctly, it stores its number in a file in the project root called "prob".
 
 ## Current bugs
