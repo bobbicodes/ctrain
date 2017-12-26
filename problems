@@ -30,27 +30,27 @@
    :tests ["(= __ (set '(:a :a :b :c :c :c :c :d :d)))" "(= __ (clojure.set/union #{:a :b :c} #{:b :c :d}))"]
    :description "Sets are collections of unique values."}
 
-{:_id 9 :title "Sets: conj"
+{:_id 9 :title "conj on sets"
  :tests ["(= #{1 2 3 4} (conj #{1 4 3} __))"]
  :description "When operating on a set, the conj function returns a new set with one or more keys \"added\"."}
 
-{:_id 10 :title "Intro to Maps"
+{:_id 10 :title "Maps"
  :tests ["(= __ ((hash-map :a 10, :b 20, :c 30) :b))" "(= __ (:b {:a 10, :b 20, :c 30}))"]
  :description "Maps store key-value pairs.  Both maps and keywords can be used as lookup functions. Commas are whitespace."}
 
-{:_id 11 :title "Maps: conj"
+{:_id 11 :title "conj on maps"
  :tests ["(= {:a 1, :b 2, :c 3} (conj {:a 1} __ [:c 3]))"]
  :description "When operating on a map, the conj function returns a new map with one or more key-value pairs \"added\"."}
 
-{:_id 12 :title "Intro to Sequences"
+{:_id 12 :title "Sequences"
  :tests ["(= __ (first '(3 2 1)))" "(= __ (second [2 3 4]))" "(= __ (last (list 1 2 3)))"],
  :description "All Clojure collections support sequencing.  You can operate on sequences with functions like first, second, and last."}
 
-{:_id 13 :title "Sequences: rest"
+{:_id 13 :title "rest"
  :tests ["(= __ (rest [10 20 30 40]))"]
  :description "The rest function will return all the items of a sequence except the first."}
 
-{:_id 14 :title "Intro to Functions"
+{:_id 14 :title "Functions"
  :tests ["(= __ ((fn add-five [x] (+ x 5)) 3))" "(= __ ((fn [x] (+ x 5)) 3))" "(= __ (#(+ % 5) 3))" "(= __ ((partial + 5) 3))"]
  :description "Clojure has many different ways to create functions."}
 
@@ -58,17 +58,17 @@
  :tests ["(= (__ 2) 4)" "(= (__ 3) 6)" "(= (__ 11) 22)" "(= (__ 7) 14)"]
  :description "Write a function which doubles a number."}
 
-{:_id 16 :title "Hello World"
- :tests ["(= (__ \"Dave\") \"Hello, Dave!\")" "(= (__ \"Jenn\") \"Hello, Jenn!\")" "(= (__ \"Rhea\") \"Hello, Rhea!\")"]
+{:_id 16 :title "What Up"
+ :tests ["(= (__ \"Dave\") \"What up, Dave!\")" "(= (__ \"Jenn\") \"What up, Jenn!\")" "(= (__ \"Rhea\") \"What up, Rhea!\")"]
  :description "Write a function which returns a personalized greeting."}
 
-{:_id 17 :title "Sequences: map"
+{:_id 17 :title "map"
  :tests ["(= __ (map #(+ % 5) '(1 2 3)))"]
  :description "The map function takes two arguments: a function (f) and a sequence (s).
               Map returns a new sequence consisting of the result of applying f to each item of s.
               Do not confuse the map function with the map data structure."}
 
-{:_id 18 :title "Sequences: filter"
+{:_id 18 :title "filter"
  :tests ["(= __ (filter #(> % 5) '(3 4 5 6 7)))"]
  :description "The filter function takes two arguments: a predicate function (f) and a sequence (s).
               Filter returns a new sequence consisting of all the items of s for which (f item) returns true."}
