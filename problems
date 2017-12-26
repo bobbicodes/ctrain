@@ -6,27 +6,27 @@
    :tests ["(= (- 10 (* 2 3)) __)"]
    :description "Innermost forms are evaluated first."}
 
-  {:_id 3 :title "Intro to Strings"
+  {:_id 3 :title "Strings"
    :tests ["(= __ (.toUpperCase \"eat me\"))"]
-   :description "Clojure strings are Java strings.  This means that you can use any of the Java string methods on Clojure strings."}
+   :description "Clojure strings are Java strings, so you can use Java string methods on them."}
 
-  {:_id 4 :title "Intro to Lists"
+  {:_id 4 :title "Lists"
    :tests ["(= (list __) '(:a :b :c))"]
    :description "Lists can be constructed with either a function or a quoted form."}
 
-  {:_id 5 :title "Lists: conj"
+  {:_id 5 :title "conj on lists"
    :tests ["(= __ (conj '(2 3 4) 1))" "(= __ (conj '(3 4) 2 1))"]
    :description "When operating on a list, the conj function will return a new list with one or more items \"added\" to the front."}
 
-  {:_id 6 :title "Intro to Vectors"
+  {:_id 6 :title "Vectors"
    :tests ["(= [__] (list :a :b :c) (vec '(:a :b :c)) (vector :a :b :c))"]
    :description "Vectors can be constructed several ways.  You can compare them with lists."}
 
-  {:_id 7 :title "Vectors: conj"
+  {:_id 7 :title "conj on vectors"
    :tests ["(= __ (conj [1 2 3] 4))" "(= __ (conj [1 2] 3 4))"]
    :description "When operating on a Vector, the conj function will return a new vector with one or more items \"added\" to the end."}
 
-  {:_id 8 :title "Intro to Sets"
+  {:_id 8 :title "Sets"
    :tests ["(= __ (set '(:a :a :b :c :c :c :c :d :d)))" "(= __ (clojure.set/union #{:a :b :c} #{:b :c :d}))"]
    :description "Sets are collections of unique values."}
 
