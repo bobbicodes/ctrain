@@ -6,15 +6,16 @@
   (read-string (slurp "problems")))
 
 (defn evaluator [n]
- (if (= true
-        (eval (read-string (s/replace (first (:tests (nth problems (- n 1)))) "__" (read-line)))))
-     (do
-       (spit "prob" (inc n))
-       (println "")
-       (str "GOOD JOB"))))
+  (if (= true
+    (eval (read-string (s/replace
+      (first (:tests (nth problems (- n 1)))) "__" (read-line)))))
+    (do
+      (spit "prob" (inc n))
+      (println "")
+      (str "GOOD JOB"))))
 
 (defn problem [n]
-  (println (str (:title (nth problems (- n 1)))))
+  (println (str "#" n " " (:title (nth problems (- n 1)))))
   (println "")
    (println (str (:description (nth problems (- n 1)))))
    (println "")
