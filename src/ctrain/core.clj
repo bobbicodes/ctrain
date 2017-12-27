@@ -24,7 +24,7 @@
   (loop [coll results]
     (if (empty? coll)
       (do
-      (spit "prob" (inc (inc (read-string (slurp "prob")))))
+      (spit "prob" (inc (read-string (slurp "prob"))))
       (println "")
       (str "GOOD JOB")
       (-main)))
@@ -37,8 +37,7 @@
   (println "")
    (println (str (:description (nth problems (- n 1)))))
    (println "")
-   (run! println (:tests (nth problems (- n 1))))
-(replacer n))
+   (run! println (:tests (nth problems (- n 1)))))
 
 (defn -main []
   (println "")
