@@ -28,7 +28,9 @@
 (defn replacer [n]
   (let [ans (read-line)]
     (if (= ans "")
-        (-main))
+        (do
+          (println "Nice try, but blank answers are not allowed.")
+          (-main)))
 (loop [tests (:tests (problems (- n 1))) replaced []]
   (if (empty? tests)
       (evaluator replaced)
