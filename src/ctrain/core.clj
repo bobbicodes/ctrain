@@ -7,16 +7,35 @@
 (def problems
   (read-string (slurp "problems")))
 
+(def ansi-styles
+  {:red   "[31m"
+   :green "[32m"
+   :blue  "[34m"
+   :reset "[0m"})
+
+(defn ansi
+  "Produce a string which will apply an ansi style"
+  [style]
+  (str \u001b (style ansi-styles)))
+
+(defn colorize
+  "Apply ansi color to text"
+  [text color]
+  (str (ansi color) text (ansi :reset)))
+
 (defn final [results]
   (loop [coll results]
     (if (empty? coll)
       (do
       (spit "prob" (inc (read-string (slurp "prob"))))
       (println "")
-      (str "GOOD JOB")
+      (println (colorize "GOOD JOB! Here's the next one:" :green))
       (-main)))
    (if (= false (first coll))
-       (-main))      
+       (do
+          (println "")
+          (println (colorize "Nope... try again or Ctrl+C to quit" :red))
+       (-main)))
 (recur (rest coll))))
 
 (defn evaluator [answers]
@@ -29,7 +48,7 @@
   (let [ans (read-line)]
     (if (= ans "")
         (do
-          (println "Nice try, but blank answers are not allowed.")
+          (println (colorize "Nice try, but blank answers are not allowed." :red))
           (-main)))
 (loop [tests (:tests (problems (- n 1))) replaced []]
   (if (empty? tests)
