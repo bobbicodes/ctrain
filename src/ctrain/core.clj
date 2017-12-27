@@ -30,11 +30,13 @@
       (spit "prob" (inc (read-string (slurp "prob"))))
       (println "")
       (println (colorize "GOOD JOB! Here's the next one:" :green))
+       (Thread/sleep 2000)
       (-main)))
    (if (= false (first coll))
        (do
           (println "")
           (println (colorize "Nope... try again or Ctrl+C to quit" :red))
+          (Thread/sleep 2000)
        (-main)))
 (recur (rest coll))))
 
@@ -49,6 +51,7 @@
     (if (= ans "")
         (do
           (println (colorize "Nice try, but blank answers are not allowed." :red))
+          (Thread/sleep 2000)
           (-main)))
 (loop [tests (:tests (problems (- n 1))) replaced []]
   (if (empty? tests)
