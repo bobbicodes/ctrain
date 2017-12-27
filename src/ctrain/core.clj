@@ -11,16 +11,12 @@
 (def ansi-styles
   {:red   "[31m"
    :green "[32m"
-   :blue  "[34m"
    :reset "[0m"})
 
-(defn ansi
-  "Produce a string which will apply an ansi style"
-  [style]
+(defn ansi [style]
   (str \u001b (style ansi-styles)))
 
 (defn colorize
-  "Apply ansi color to text"
   [text color]
   (str (ansi color) text (ansi :reset)))
 
@@ -29,14 +25,12 @@
     (if (empty? coll)
       (do
       (spit "prob" (inc (read-string (slurp "prob"))))
-      (println "")
-      (println (colorize "GOOD JOB! Here's the next one:" :green))
+      (println (colorize "\nGOOD JOB! Here's the next one:" :green))
        (Thread/sleep 1000)
       (-main)))
    (if (= false (first coll))
        (do
-          (println "")
-          (println (colorize "Nope... try again or Ctrl+C to quit" :red))
+          (println (colorize "\nNope... try again or Ctrl+C to quit" :red))
           (Thread/sleep 1000)
        (-main)))
 (recur (rest coll))))
@@ -60,14 +54,11 @@
       (recur (rest tests) (conj replaced (s/replace (first tests) "__" ans)))))))
 
 (defn problem [n]
-  (println (str "#" n " " (:title (nth problems (- n 1)))))
-  (println "")
-   (println (str (:description (nth problems (- n 1)))))
-   (println "")
+  (println (str "\n#" n ": " (:title (nth problems (- n 1)))))
+   (println (str "\n" (:description (nth problems (- n 1)))) "\n")
    (run! println (:tests (nth problems (- n 1)))))
 
 (defn -main []
-  (println "")
   (let [n (read-string (slurp "prob"))]
     (problem n)
   (replacer n)))
