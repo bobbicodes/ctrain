@@ -9,8 +9,6 @@ When you answer a problem correctly, it stores its number in a file in the proje
 
 ## Current bugs
 
-1. It actually evaluates the expressions you enter, so it will freak out and crash if you put in something that doesn't make sense.
+1. It actually evaluates the expressions you enter, so it will freak out and crash if you put in something that doesn't make sense. I have to figure out how to evaluate the answer only if it is a valid answer. But how do you evaluate that?
 
-2. For now it only does the first of the tests. While I kinda like it because it makes it simpler, I probably ought to fix it.
-
-3. It has no concept of restricted functions in your answer. It's just a dirty free-for-all.
+2. It has no concept of restricted functions in your answer. It's just a dirty free-for-all.
