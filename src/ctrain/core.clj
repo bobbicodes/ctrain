@@ -1,5 +1,6 @@
 (ns ctrain.core
-  (:require [clojure.string :as s])
+  (:require [clojure.string :as s]
+            [clojure.set])
   (:gen-class))
 
 (declare -main)
