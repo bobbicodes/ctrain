@@ -42,7 +42,7 @@
       (recur (rest totest) (conj results (eval (read-string (first totest))))))))
 
 (defn replacer [n]
-  (let [ans (read-line)]
+  (let [ans (slurp (str "ans-" n))]
     (if (= ans "")
         (do
           (println (colorize "Nice try, but blank answers are not allowed." :red))
@@ -53,10 +53,13 @@
       (evaluator replaced)
       (recur (rest tests) (conj replaced (s/replace (first tests) "__" ans)))))))
 
+
 (defn problem [n]
   (println (str "\n#" n ": " (:title (nth problems (- n 1)))))
    (println (str "\n" (:description (nth problems (- n 1)))) "\n")
-   (run! println (:tests (nth problems (- n 1)))))
+   (run! println (:tests (nth problems (- n 1))))
+   (spit (str "ans-" n) (read-line))
+)
 
 (defn -main []
   (let [n (read-string (slurp "prob"))]
