@@ -7,30 +7,18 @@
 
 (def problems
   (read-string (slurp "problems")))
-
-(def ansi-styles
-  {:red   "[31m"
-   :green "[32m"
-   :reset "[0m"})
-
-(defn ansi [style]
-  (str \u001b (style ansi-styles)))
-
-(defn colorize
-  [text color]
-  (str (ansi color) text (ansi :reset)))
-
+  
 (defn final [results]
   (loop [coll results]
     (if (empty? coll)
       (do
       (spit "prob" (inc (read-string (slurp "prob"))))
-      (println (colorize "\nGOOD JOB! Here's the next one:" :green))
+      (println "\nGOOD JOB! Here's the next one:")
        (Thread/sleep 1000)
       (-main)))
    (if (= false (first coll))
        (do
-          (println (colorize "\nNope... try again or Ctrl+C to quit" :red))
+          (println "\nNope... try again or Ctrl+C to quit")
           (Thread/sleep 1000)
        (-main)))
 (recur (rest coll))))
@@ -45,7 +33,7 @@
   (let [ans (slurp (str "ans-" n))]
     (if (= ans "")
         (do
-          (println (colorize "Nice try, but blank answers are not allowed." :red))
+          (println "Nice try, but blank answers are not allowed.")
           (Thread/sleep 1000)
           (-main)))
 (loop [tests (:tests (problems (- n 1))) replaced []]
@@ -58,8 +46,7 @@
   (println (str "\n#" n ": " (:title (nth problems (- n 1)))))
    (println (str "\n" (:description (nth problems (- n 1)))) "\n")
    (run! println (:tests (nth problems (- n 1))))
-   (spit (str "ans-" n) (read-line))
-)
+   (spit (str "ans-" n)(read-line)))
 
 (defn -main []
   (let [n (read-string (slurp "prob"))]
