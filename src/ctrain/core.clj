@@ -6,13 +6,13 @@
 (declare -main)
 
 (def problems
-  (read-string (slurp "problems")))
+  (read-string (slurp "problems.edn")))
   
-(defn final [results]
+(defn tester [results]
   (loop [coll results]
     (if (empty? coll)
       (do
-       (spit "prob" (inc (read-string (slurp "prob"))))
+       (spit "prob-num" (inc (read-string (slurp "prob-num"))))
        (println "\nGOOD JOB! Here's the next one:")
        (Thread/sleep 1000)
        (-main)))
@@ -26,7 +26,7 @@
 (defn evaluator [answers]
   (loop [totest answers results []]
     (if (empty? totest)
-      (final results)
+      (tester results)
       (recur
         (rest totest)
         (conj results
@@ -57,6 +57,6 @@
   (spit (str "ans-" n)(read-line)))
 
 (defn -main []
-  (let [n (read-string (slurp "prob"))]
+  (let [n (read-string (slurp "prob-num"))]
     (problem n)
     (replacer n)))
