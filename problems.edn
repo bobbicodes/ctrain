@@ -272,4 +272,13 @@ The rules are:
 
 -You will be given a set of tuples representing the edges of a graph. Each member of a tuple being a vertex/node in the graph.
 
--Each edge is undirected (can be traversed either direction)."}]
+-Each edge is undirected (can be traversed either direction)."}
+
+{:_id 92 :title "Read Roman numerals"
+ :tests ["(= 14 (__ \"XIV\"))"
+	 "(= 827 (__ \"DCCCXXVII\"))"
+	 "(= 3999 (__ \"MMMCMXCIX\"))"
+	 "(= 48 (__ \"XLVIII\"))"]
+ :description "Roman numerals are easy to recognize, but not everyone knows all the rules necessary to work with them. Write a function to parse a Roman-numeral string and return the number it represents. 
+
+You can assume that the input will be well-formed, in upper-case, and follow the subtractive principle. You don't need to handle any numbers greater than MMMCMXCIX (3999), the largest number representable with ordinary letters."}]
