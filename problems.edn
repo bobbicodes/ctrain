@@ -398,4 +398,18 @@ Write a predicate to determine whether or not a given binary tree is symmetric.
 - Each successive row is computed by adding together adjacent numbers in the row above,
 and adding a 1 to the beginning and end of the row.
 
-Write a function which returns the nth row of Pascal's Triangle."}]
+Write a function which returns the nth row of Pascal's Triangle."}
+
+{:_id 98 :title "Equivalence Classes"
+ :tests ["(= (__ #(* % %) #{-2 -1 0 1 2})
+   #{#{0} #{1 -1} #{2 -2}})"
+	 "(= (__ #(rem % 3) #{0 1 2 3 4 5 })
+   #{#{0 3} #{1 4} #{2 5}})"
+	 "(= (__ identity #{0 1 2 3 4})
+   #{#{0} #{1} #{2} #{3} #{4}})"
+	 "(= (__ (constantly true) #{0 1 2 3 4})
+   #{#{0 1 2 3 4}})"]
+ :description "A function f defined on a domain D induces an equivalence relation on D, as follows:
+a is equivalent to b with respect to f if and only if (f a) is equal to (f b).
+Write a function with arguments f and D that computes the equivalence classes of D with respect to f."}
+]
