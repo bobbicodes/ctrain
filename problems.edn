@@ -343,4 +343,39 @@ The 'board' consists of both live (#) and dead ( ) cells. Each cell interacts wi
 3) Any live cell with more than three live neighbours dies, as if by overcrowding.
 4) Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
 
-Write a function that accepts a board, and returns a board representing the next generation of cells."}]
+Write a function that accepts a board, and returns a board representing the next generation of cells."}
+
+{:_id 95 :title "To Tree, or not to Tree"
+ :tests ["(= (__ '(:a (:b nil nil) nil))
+   true)"
+	 "(= (__ '(:a (:b nil nil)))
+   false)"
+	 "(= (__ [1 nil [2 [3 nil nil] [4 nil nil]]])
+   true)"
+	 "(= (__ [1 [2 nil nil] [3 nil nil] [4 nil nil]])
+   false)"
+	 "(= (__ [1 [2 [3 [4 nil nil] nil] nil] nil])
+   true)"
+	 "(= (__ [1 [2 [3 [4 false nil] nil] nil] nil])
+   false)"
+	 "(= (__ '(:a nil ()))
+   false)"]
+ :description "Write a predicate which checks whether or not a given sequence represents a binary tree.
+Each node in the tree must have a value, a left child, and a right child."}
+
+{:_id 96 :title "Beauty is Symmetry"
+ :tests ["(= (__ '(:a (:b nil nil) (:b nil nil))) true)"
+	 "(= (__ '(:a (:b nil nil) nil)) false)"
+	 "(= (__ '(:a (:b nil nil) (:c nil nil))) false)"
+	 "(= (__ [1 [2 nil [3 [4 [5 nil nil] [6 nil nil]] nil]]
+          [2 [3 nil [4 [6 nil nil] [5 nil nil]]] nil]])
+   true)"
+	 "(= (__ [1 [2 nil [3 [4 [5 nil nil] [6 nil nil]] nil]]
+          [2 [3 nil [4 [5 nil nil] [6 nil nil]]] nil]])
+   false)"
+	 "(= (__ [1 [2 nil [3 [4 [5 nil nil] [6 nil nil]] nil]]
+          [2 [3 nil [4 [6 nil nil] nil]] nil]])
+   false)"] 
+ :description "Let us define a binary tree as \"symmetric\" if the left half of the tree is the mirror image of the right half of the tree.
+Write a predicate to determine whether or not a given binary tree is symmetric.
+(see To Tree, or not to Tree for a reminder on the tree representation we're using)."}]
