@@ -1,34 +1,34 @@
 [{:_id 1 :title "Nothing but the Truth"
-    :tests ["(= __ true)"],
-    :description "Complete the expression so it will evaluate to true."}
+  :tests ["(= __ true)"],
+  :description "Complete the expression so it will evaluate to true."}
  
-  {:_id 2 :title "Simple Math"
-   :tests ["(= (- 10 (* 2 3)) __)"]
-   :description "Innermost forms are evaluated first."}
+{:_id 2 :title "Simple Math"
+ :tests ["(= (- 10 (* 2 3)) __)"]
+ :description "Innermost forms are evaluated first."}
 
-  {:_id 3 :title "Strings"
-   :tests ["(= __ (.toUpperCase \"eat me\"))"]
-   :description "Clojure strings are Java strings, so you can use Java string methods on them."}
+{:_id 3 :title "Strings"
+ :tests ["(= __ (.toUpperCase \"eat me\"))"]
+ :description "Clojure strings are Java strings, so you can use Java string methods on them."}
 
-  {:_id 4 :title "Lists"
-   :tests ["(= (list __) '(:a :b :c))"]
-   :description "Lists can be constructed with either a function or a quoted form."}
+{:_id 4 :title "Lists"
+ :tests ["(= (list __) '(:a :b :c))"]
+ :description "Lists can be constructed with either a function or a quoted form."}
 
-  {:_id 5 :title "conj on lists"
-   :tests ["(= __ (conj '(2 3 4) 1))" "(= __ (conj '(3 4) 2 1))"]
-   :description "When operating on a list, the conj function will return a new list with one or more items \"added\" to the front."}
+{:_id 5 :title "conj on lists"
+ :tests ["(= __ (conj '(2 3 4) 1))" "(= __ (conj '(3 4) 2 1))"]
+ :description "When operating on a list, the conj function will return a new list with one or more items \"added\" to the front."}
 
-  {:_id 6 :title "Vectors"
-   :tests ["(= [__] (list :a :b :c) (vec '(:a :b :c)) (vector :a :b :c))"]
-   :description "Vectors can be constructed several ways.  You can compare them with lists."}
+{:_id 6 :title "Vectors"
+ :tests ["(= [__] (list :a :b :c) (vec '(:a :b :c)) (vector :a :b :c))"]
+ :description "Vectors can be constructed several ways.  You can compare them with lists."}
 
-  {:_id 7 :title "conj on vectors"
-   :tests ["(= __ (conj [1 2 3] 4))" "(= __ (conj [1 2] 3 4))"]
-   :description "When operating on a Vector, the conj function will return a new vector with one or more items \"added\" to the end."}
+{:_id 7 :title "conj on vectors"
+ :tests ["(= __ (conj [1 2 3] 4))" "(= __ (conj [1 2] 3 4))"]
+ :description "When operating on a Vector, the conj function will return a new vector with one or more items \"added\" to the end."}
 
-  {:_id 8 :title "Sets"
-   :tests ["(= __ (set '(:a :a :b :c :c :c :c :d :d)))" "(= __ (clojure.set/union #{:a :b :c} #{:b :c :d}))"]
-   :description "Sets are collections of unique values."}
+{:_id 8 :title "Sets"
+ :tests ["(= __ (set '(:a :a :b :c :c :c :c :d :d)))" "(= __ (clojure.set/union #{:a :b :c} #{:b :c :d}))"]
+ :description "Sets are collections of unique values."}
 
 {:_id 9 :title "conj on sets"
  :tests ["(= #{1 2 3 4} (conj #{1 4 3} __))"]
@@ -71,19 +71,19 @@
 {:_id 18 :title "filter"
  :tests ["(= __ (filter #(> % 5) '(3 4 5 6 7)))"]
  :description "The filter function takes two arguments: a predicate function (f) and a sequence (s).
-              Filter returns a new sequence consisting of all the items of s for which (f item) returns true."}
+Filter returns a new sequence consisting of all the items of s for which (f item) returns true."}
 
 {:_id 19 :restricted ["last"], :title "Last Element"
  :tests ["(= (__ [1 2 3 4 5]) 5)" "(= (__ '(5 4 3)) 3)" "(= (__ [\"b\" \"c\" \"d\"]) \"d\")"]
-:description "Write a function which returns the last element in a sequence."}
+ :description "Write a function which returns the last element in a sequence."}
 
 {:_id 20 :title "Penultimate Element"
-:tests ["(= (__ (list 1 2 3 4 5)) 4)" "(= (__ [\"a\" \"b\" \"c\"]) \"b\")" "(= (__ [[1 2] [3 4]]) [1 2])"]
-:description "Write a function which returns the second to last element from a sequence."}
+ :tests ["(= (__ (list 1 2 3 4 5)) 4)" "(= (__ [\"a\" \"b\" \"c\"]) \"b\")" "(= (__ [[1 2] [3 4]]) [1 2])"]
+ :description "Write a function which returns the second to last element from a sequence."}
 
 {:_id 21 :restricted ["nth"], :title "Nth Element"
-:tests ["(= (__ '(4 5 6 7) 2) 6)" "(= (__ [:a :b :c] 0) :a)" "(= (__ [1 2 3 4] 1) 2)" "(= (__ '([1 2] [3 4] [5 6]) 2) [5 6])"]
-:description "Write a function which returns the Nth element from a sequence."}
+ :tests ["(= (__ '(4 5 6 7) 2) 6)" "(= (__ [:a :b :c] 0) :a)" "(= (__ [1 2 3 4] 1) 2)" "(= (__ '([1 2] [3 4] [5 6]) 2) [5 6])"]
+ :description "Write a function which returns the Nth element from a sequence."}
 
 {:_id 22 :restricted ["count"], :title "Count a Sequence" :tests ["(= (__ '(1 2 3 3 1)) 5)" "(= (__ \"Hello World\") 11)" "(= (__ [[1 2] [3 4] [5 6]]) 3)" "(= (__ '(13)) 1)" "(= (__ '(:a :b :c)) 3)"], :description "Write a function which returns the total number of elements in a sequence.", :tags ["easy" "seqs" "core-functions"]}
 
@@ -412,4 +412,10 @@ Write a function which returns the nth row of Pascal's Triangle."}
  :description "A function f defined on a domain D induces an equivalence relation on D, as follows:
 a is equivalent to b with respect to f if and only if (f a) is equal to (f b).
 Write a function with arguments f and D that computes the equivalence classes of D with respect to f."}
+
+{:_id 99 :title "Product Digits"
+ :tests ["(= (__ 1 1) [1])"
+	 "(= (__ 99 9) [8 9 1])"
+	 "(= (__ 999 99) [9 8 9 0 1])"]
+ :description "Write a function which multiplies two numbers and returns the result as a sequence of its digits."}
 ]
