@@ -427,4 +427,21 @@ Write a function with arguments f and D that computes the equivalence classes of
 	 "(== (__ 7 5/7 2 3/5) 210)"]
  :description "Write a function which calculates the least common multiple.
 Your function should accept a variable number of positive integers or ratios."}
-]
+
+{:_id 101 :title "Levenshtein Distance"
+ :tests ["(= (__ \"kitten\" \"sitting\") 3)"
+	 "(= (__ \"closure\" \"clojure\") (__ \"clojure\" \"closure\") 1)"
+	 "(= (__ \"xyx\" \"xyyyx\") 2)"
+	 "(= (__ \"\" \"123456\") 6)"
+	 "(= (__ \"Clojure\" \"Clojure\") (__ \"\" \"\") (__ [] []) 0)"
+	 "(= (__ [1 2 3 4] [0 2 3 4 5]) 2)"
+	 "(= (__ '(:a :b :c :d) '(:a :d)) 2)"
+	 "(= (__ \"ttttattttctg\" \"tcaaccctaccat\") 10)"
+	 "(= (__ \"gaattctaatctc\" \"caaacaaaaaattt\") 9)"]
+ :description "Given two sequences x and y, calculate the Levenshtein distance of x and y, i. e. the minimum number of edits needed to transform x into y. The allowed edits are:
+
+- insert a single item
+- delete a single item
+- replace a single item with another item
+
+WARNING: Some of the test cases may timeout if you write an inefficient solution!"}]
