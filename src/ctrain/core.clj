@@ -24,14 +24,14 @@
     (recur (rest coll))))
 
 (defn evaluator [answers]
-  (loop [totest answers results []]
-    (if (empty? totest)
+  (loop [answers answers results []]
+    (if (empty? answers)
       (tester results)
       (recur
-        (rest totest)
+        (rest answers)
         (conj results
           (try
-             (eval (read-string (first totest)))
+             (eval (read-string (first answers)))
              (catch Exception e
                (println (str "Error evaluating: " (class e) ":" (.getMessage e)))
                (.printStackTrace e)
