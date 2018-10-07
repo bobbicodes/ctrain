@@ -62,7 +62,3 @@
   (let [n (read-string (slurp "prob-num"))]
     (problem n)
     (replacer n)))
-
-
-
-(def stuff {:thing "stuff" :otherthing "other stuff" :expression (+ 1 5 6)})
