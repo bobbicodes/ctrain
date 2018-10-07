@@ -1,6 +1,6 @@
 (ns ctrain.core
   (:require [clojure.string :as s]
-            [clojure.set :refer :all])
+                      [clojure.set :refer :all])
   (:gen-class))
 
 (declare -main)
@@ -13,13 +13,13 @@
     (if (empty? coll)
       (do
        (spit "prob-num" (inc (read-string (slurp "prob-num"))))
-       (println "\nGOOD JOB! Here's the next one:")
-       (Thread/sleep 1000)
+       (println "\nNICE! Here's the next one:")
+       (Thread/sleep 1500)
        (-main)))
     (if (= false (first coll))
        (do
-          (println "\nNope... try again or Ctrl+C to quit")
-          (Thread/sleep 1000)
+          (println "\nSorry, try again...")
+          (Thread/sleep 1500)
           (-main)))
     (recur (rest coll))))
 
@@ -40,10 +40,7 @@
 (defn replacer [n]
   (let [ans (slurp (str "ans-" n))]
     (if (= ans "")
-        (do
-          (println "You must enter something.")
-          (Thread/sleep 1000)
-          (-main)))
+          (-main))
     (loop [tests (:tests (problems (- n 1))) replaced []]
         (if (empty? tests)
           (evaluator replaced)
@@ -58,6 +55,7 @@
 (defn get-answer [n]
   (:answer (nth (read-string (slurp "progress.edn")) (dec n))))
 
+
 (defn problem [n]
   (println (str "\n#" n ": " (:title (get-problem n))))
   (println (str "\n" (:description (get-problem n)) "\n"))
@@ -68,3 +66,10 @@
   (let [n (read-string (slurp "prob-num"))]
     (problem n)
     (replacer n)))
+
+(defn prob-num []
+  (let [problems (read-string (slurp "progress.edn"))]
+    (loop [n 1]
+      (if (get-answer n)
+          (recur (inc n))
+          n))))
