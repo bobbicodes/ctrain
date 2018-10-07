@@ -1,5 +1,7 @@
 (ns ctrain.core
-  (:require [clojure.string :as s]))
+  (:require [clojure.string :as s]
+            [clojure.set :refer :all])
+  (:gen-class))
 
 (declare -main)
 
@@ -49,7 +51,6 @@
 
 (defn get-problem [n]
   (nth problems (dec n))) 
-
 
 (defn problem [n]
   (println (str "\n#" n ": " (:title (get-problem n))))
