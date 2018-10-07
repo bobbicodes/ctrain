@@ -50,22 +50,14 @@
   (nth problems (dec n))) 
 
 (defn answer [n]
-  (spit "progress.edn" (assoc-in problems [(dec n) :answer] (read-line))))
+  (spit "progress.edn"
+        (assoc-in problems [(dec n) :answer]
+                  (read-line))))
 
 (defn get-answer [n]
-  (:answer (nth (read-string (slurp "progress.edn")) (dec n))))
-
-
-(defn problem [n]
-  (println (str "\n#" n ": " (:title (get-problem n))))
-  (println (str "\n" (:description (get-problem n)) "\n"))
-  (run! println (:tests (get-problem n)))
-  (spit (str "ans-" n)(read-line)))
-
-(defn -main []
-  (let [n (read-string (slurp "prob-num"))]
-    (problem n)
-    (replacer n)))
+  (:answer
+    (nth (read-string (slurp "progress.edn"))
+         (dec n))))
 
 (defn prob-num []
   (let [problems (read-string (slurp "progress.edn"))]
@@ -73,3 +65,14 @@
       (if (get-answer n)
           (recur (inc n))
           n))))
+
+(defn print-problem [n]
+  (println (str "\n#" n ": " (:title (get-problem n))))
+  (println (str "\n" (:description (get-problem n)) "\n"))
+  (run! println (:tests (get-problem n)))
+  (spit (str "ans-" n)(read-line)))
+
+(defn -main []
+  (let [n (read-string (slurp "prob-num"))]
+    (print-problem n)
+    (replacer n)))
