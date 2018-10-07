@@ -58,8 +58,6 @@
         (assoc-in problems [(dec n) :answer]
                   (read-line))))
 
-; (read-string (slurp "progress.edn"))
-
 (defn prob-num [m]
     (loop [n 1]
       (if (get-answer m n)
@@ -71,8 +69,13 @@
   (println (str "\n" (:description (get-problem n)) "\n"))
   (run! println (:tests (get-problem n))))
 
-;(defn -main []
-;  (let [n (prob-num)]
-;    (print-problem n)
-;    (answer n)
-;    (replacer n)))
+(defn -main []
+  (let [n (prob-num (read-string (slurp "progress.edn")))]
+    (print-problem n)
+    (answer n)
+    (replacer n)))
+
+(defn get-current-answer [problems]
+    (get-answer problems (prob-num problems)))
+
+(get-current-answer (read-string (slurp "progress.edn")))
