@@ -52,6 +52,9 @@
 (defn get-problem [n]
   (nth problems (dec n))) 
 
+(defn answer [n]
+  (spit "progress.edn" (assoc-in problems [(dec n) :answer] (read-line))))
+
 (defn problem [n]
   (println (str "\n#" n ": " (:title (get-problem n))))
   (println (str "\n" (:description (get-problem n)) "\n"))
