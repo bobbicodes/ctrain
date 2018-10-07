@@ -1,6 +1,6 @@
 # ctrain
 
-Run the 4clojure problems without having to load a graphical browser or desktop session. Even do it over ssh!
+Learn Clojure right from the command-line, from within a running Clojure program. Even do it over ssh!
 
 ## Usage
 
