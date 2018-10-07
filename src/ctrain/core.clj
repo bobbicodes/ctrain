@@ -1,13 +1,11 @@
 (ns ctrain.core
-  (:require [clojure.string :as s]
-            [clojure.set])
-  (:gen-class))
+  (:require [clojure.string :as s]))
 
 (declare -main)
 
 (def problems
   (read-string (slurp "problems.edn")))
-  
+
 (defn tester [results]
   (loop [coll results]
     (if (empty? coll)
@@ -41,7 +39,7 @@
   (let [ans (slurp (str "ans-" n))]
     (if (= ans "")
         (do
-          (println "Nice try, but blank answers are not allowed.")
+          (println "You must enter something.")
           (Thread/sleep 1000)
           (-main)))
     (loop [tests (:tests (problems (- n 1))) replaced []]
@@ -49,14 +47,21 @@
           (evaluator replaced)
           (recur (rest tests) (conj replaced (s/replace (first tests) "__" ans)))))))
 
+(defn get-problem [n]
+  (nth problems (dec n))) 
+
 
 (defn problem [n]
-  (println (str "\n#" n ": " (:title (nth problems (- n 1)))))
-  (println (str "\n" (:description (nth problems (- n 1)))) "\n")
-  (run! println (:tests (nth problems (- n 1))))
+  (println (str "\n#" n ": " (:title (get-problem n))))
+  (println (str "\n" (:description (get-problem n)) "\n"))
+  (run! println (:tests (get-problem n)))
   (spit (str "ans-" n)(read-line)))
 
 (defn -main []
   (let [n (read-string (slurp "prob-num"))]
     (problem n)
     (replacer n)))
+
+
+
+(def stuff {:thing "stuff" :otherthing "other stuff" :expression (+ 1 5 6)})
