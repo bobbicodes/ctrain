@@ -2,6 +2,8 @@
   (:require [clojure.test :refer :all]
             [ctrain.core :refer :all]))
 
-(deftest a-test
-  (testing "FIXME, I fail."
-    (is (= 0 1))))
+(deftest get-problem-test
+  (is (= (get-problem 1)
+         {:_id 1, :title "Nothing but the Truth"
+          :tests ["(= __ true)"]
+          :description "Complete the expression so it will evaluate to true."})))
