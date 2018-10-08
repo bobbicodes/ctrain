@@ -54,7 +54,7 @@
 (defn replacer [problems]  
     (s/replace (get-tests problems)
                "__"
-               (get-current-answer problems))
+               (get-current-answer problems)))
 
 (defn get-problem [n]
   (nth problems (dec n))) 
