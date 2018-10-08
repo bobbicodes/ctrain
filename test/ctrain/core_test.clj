@@ -22,17 +22,17 @@
 (deftest prob-num-test
   (is (= 2 (prob-num data))))
 
-(deftest get-current-answer-test
-  (is (= "[1 2 3 4]" (get-current-answer data))))
+(deftest get-last-answer-test
+  (is (= "[1 2 3 4]" (get-last-answer data))))
 
 (deftest get-tests-test
   (is (= ["(= __ (conj [1 2 3] 4))" "(= __ (conj [1 2] 3 4))"]
              (get-tests data))))
 
-(deftest replacer-test
+(deftest submit-test
   (is (= "[\"(= [1 2 3 4] (conj [1 2 3] 4))\" \"(= [1 2 3 4] (conj [1 2] 3 4))\"]"
-                       (replacer data))))
+                       (submit data))))
 
 (deftest evaluate-test
   (is (= [true true]
-              (evaluate (read-string (replacer data))))))
+              (evaluate (read-string (submit data))))))
