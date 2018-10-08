@@ -36,19 +36,25 @@
                (.printStackTrace e)
                false)))))))
 
-(defn get-answer [m n]
-  (:answer (nth m (dec n))))
+(defn get-answer [problems n]
+  (:answer (nth problems (dec n))))
 
-(defn replacer [n]
-    (if (= (get-answer n) "")
-          (-main))
-    (loop [tests (:tests (problems (dec n)))
-                   replaced []]
-        (if (empty? tests)
-          (evaluator replaced)
-          (recur (rest tests)
-                        (conj replaced
-                                    (s/replace (first tests) "__" (get-answer n)))))))
+(defn prob-num [m]
+    (loop [n 1]
+      (if (get-answer m n)
+          (recur (inc n))
+          (dec n))))
+
+(defn get-current-answer [problems]
+    (get-answer problems (prob-num problems)))
+
+(defn get-tests [problems]
+  (:tests (nth problems (dec (prob-num problems)))))
+
+(defn replacer [problems]  
+    (s/replace (get-tests problems)
+               "__"
+               (get-current-answer problems))
 
 (defn get-problem [n]
   (nth problems (dec n))) 
@@ -57,12 +63,6 @@
   (spit "progress.edn"
         (assoc-in problems [(dec n) :answer]
                   (read-line))))
-
-(defn prob-num [m]
-    (loop [n 1]
-      (if (get-answer m n)
-          (recur (inc n))
-          (dec n))))
 
 (defn print-problem [n]
   (println (str "\n#" n ": " (:title (get-problem n))))
@@ -75,7 +75,4 @@
     (answer n)
     (replacer n)))
 
-(defn get-current-answer [problems]
-    (get-answer problems (prob-num problems)))
-
-(get-current-answer (read-string (slurp "progress.edn")))
+; (get-current-answer (read-string (slurp "progress.edn")))
