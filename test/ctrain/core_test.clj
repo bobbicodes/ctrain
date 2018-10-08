@@ -52,3 +52,11 @@
               (evaluate (read-string (submit data)))))
   (is (= [false false]
               (evaluate (read-string (submit data-false))))))
+
+(deftest check-last-test
+  (is (true? (check-last data)))
+  (is (false? (check-last data-false))))
+
+(deftest next-prob-test
+  (is (= 3 (next-prob data)))
+  (is (= 2 (next-prob data-false))))
