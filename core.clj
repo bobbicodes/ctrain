@@ -5,22 +5,6 @@
 
 (declare -main)
 
-(def problems
-  (read-string (slurp "progress.edn")))
-
-(defn next-prob [results]
-    (if (empty? results)
-      (do
-       (println "\nNICE! Here's the next one:")
-       (Thread/sleep 1500)
-       (-main)))
-    (if (= false (first results))
-       (do
-          (println "\nSorry, try again...")
-          (Thread/sleep 1500)
-          (-main)))
-    (recur (rest results)))
-
 (defn evaluate [answers]
   (loop [answers answers results []]
     (if (empty? answers)
@@ -56,12 +40,14 @@
                (get-last-answer problems)))
 
 (defn get-problem [n]
-  (nth problems (dec n))) 
+  (let [problems (read-string (slurp "progress.edn"))]
+    (nth problems (dec n))))
 
 (defn answer [n]
+  (let [problems (read-string (slurp "progress.edn"))]
   (spit "progress.edn"
         (assoc-in problems [(dec n) :answer]
-                  (read-line))))
+                  (read-line)))))
 
 (defn correct? [results]
     (if (empty? results)
@@ -84,8 +70,15 @@
   (run! println (:tests (get-problem n))))
 
 (defn -main []
-  (let [problems (read-string (slurp "progress.edn"))
-            n (prob-num problems)]
-    (print-problem n)
-    (answer n)
-    (next-prob (evaluate (read-string (submit problems))))))
+  (let [problems (read-string (slurp "progress.edn"))]
+    (print-problem (next-prob problems))
+    (answer (next-prob problems))
+    (if (check-last problems)
+      (do
+       (println "\nNICE! Here's the next one:")
+       (Thread/sleep 1500)
+       (-main))
+      (do
+        (println "\nSorry, try again...")
+        (Thread/sleep 1500)
+        (-main)))))
