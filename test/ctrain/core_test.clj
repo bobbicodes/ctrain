@@ -3,19 +3,6 @@
             [ctrain.core :refer :all]))
 
 (def data
-  [{:_id 1, :title "Nothing but the Truth"
-                                           :tests ["(= __ true)"]
-                                           :description "Complete the expression so it will evaluate to true."
-                                           :answer "true"}
-                                          {:_id 2, :title "Simple Math"
-                                            :tests ["(= (- 10 (* 2 3)) __)"]
-                                            :description "Innermost forms are evaluated first."
-                                            :answer "4"}
-                                          {:_id 3, :title "Strings"
-                                            :tests ["(= __ (.toUpperCase \"eat me\"))"]
-                                            :description "Clojure strings are Java strings, so you can use Java string methods on them."}])
-
-(def other-data
   [{:_id 6, :title "Vectors"
      :tests ["(= [__] (list :a :b :c) (vec '(:a :b :c)) (vector :a :b :c))"]
      :description "Vectors can be constructed several ways.  You can compare them with lists."
@@ -30,18 +17,22 @@
       :description "Sets are collections of unique values."}])
 
 (deftest get-answer-test
-  (is (= "4" (get-answer data 2))))
+  (is (= "[1 2 3 4]" (get-answer data 2))))
 
 (deftest prob-num-test
   (is (= 2 (prob-num data))))
 
 (deftest get-current-answer-test
-  (is (= "4" (get-current-answer data))))
+  (is (= "[1 2 3 4]" (get-current-answer data))))
 
 (deftest get-tests-test
   (is (= ["(= __ (conj [1 2 3] 4))" "(= __ (conj [1 2] 3 4))"]
-             (get-tests other-data))))
+             (get-tests data))))
 
 (deftest replacer-test
   (is (= "[\"(= [1 2 3 4] (conj [1 2 3] 4))\" \"(= [1 2 3 4] (conj [1 2] 3 4))\"]"
-                       (replacer other-data))))
+                       (replacer data))))
+
+(deftest evaluate-test
+  (is (= [true true]
+              (evaluate (read-string (replacer data))))))
