@@ -8,19 +8,18 @@
 (def problems
   (read-string (slurp "progress.edn")))
 
-(defn check [results]
-  (loop [coll results]
-    (if (empty? coll)
+(defn next-prob [results]
+    (if (empty? results)
       (do
        (println "\nNICE! Here's the next one:")
        (Thread/sleep 1500)
        (-main)))
-    (if (= false (first coll))
+    (if (= false (first results))
        (do
           (println "\nSorry, try again...")
           (Thread/sleep 1500)
           (-main)))
-    (recur (rest coll))))
+    (recur (rest results)))
 
 (defn evaluate [answers]
   (loop [answers answers results []]
@@ -64,13 +63,29 @@
         (assoc-in problems [(dec n) :answer]
                   (read-line))))
 
+(defn correct? [results]
+    (if (empty? results)
+           true
+          (if (= false (first results))
+                false
+               (recur (next results)))))
+
+(defn check-last [problems]
+  (correct? (evaluate (read-string (submit problems)))))
+
+(defn next-prob [problems]
+  (if (check-last problems)
+        (inc (prob-num problems))
+        (prob-num problems)))
+
 (defn print-problem [n]
   (println (str "\n#" n ": " (:title (get-problem n))))
   (println (str "\n" (:description (get-problem n)) "\n"))
   (run! println (:tests (get-problem n))))
 
 (defn -main []
-  (let [n (prob-num (read-string (slurp "progress.edn")))]
+  (let [problems (read-string (slurp "progress.edn"))
+            n (prob-num problems)]
     (print-problem n)
     (answer n)
-    (submit n)))
+    (next-prob (evaluate (read-string (submit problems))))))
