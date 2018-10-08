@@ -8,7 +8,7 @@
 (def problems
   (read-string (slurp "progress.edn")))
 
-(defn tester [results]
+(defn check [results]
   (loop [coll results]
     (if (empty? coll)
       (do
@@ -45,16 +45,16 @@
           (recur (inc n))
           (dec n))))
 
-(defn get-current-answer [problems]
+(defn get-last-answer [problems]
     (get-answer problems (prob-num problems)))
 
 (defn get-tests [problems]
   (:tests (nth problems (dec (prob-num problems)))))
 
-(defn replacer [problems]  
+(defn submit [problems]  
     (s/replace (get-tests problems)
                "__"
-               (get-current-answer problems)))
+               (get-last-answer problems)))
 
 (defn get-problem [n]
   (nth problems (dec n))) 
@@ -73,6 +73,4 @@
   (let [n (prob-num (read-string (slurp "progress.edn")))]
     (print-problem n)
     (answer n)
-    (replacer n)))
-
-; (get-current-answer (read-string (slurp "progress.edn")))
+    (submit n)))
