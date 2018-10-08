@@ -22,10 +22,10 @@
           (-main)))
     (recur (rest coll))))
 
-(defn evaluator [answers]
+(defn evaluate [answers]
   (loop [answers answers results []]
     (if (empty? answers)
-      (tester results)
+      results
       (recur
         (rest answers)
         (conj results
