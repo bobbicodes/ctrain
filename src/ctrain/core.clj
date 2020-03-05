@@ -1,6 +1,5 @@
 (ns ctrain.core
-  (:require [clojure.string :as s]
-                      [clojure.set :refer :all])
+  (:require [clojure.string :as str])
   (:gen-class))
 
 (declare -main)
@@ -44,7 +43,7 @@
     (loop [tests (:tests (problems (- n 1))) replaced []]
         (if (empty? tests)
           (evaluator replaced)
-          (recur (rest tests) (conj replaced (s/replace (first tests) "__" ans)))))))
+          (recur (rest tests) (conj replaced (str/replace (first tests) "__" ans)))))))
 
 (defn get-problem [n]
   (nth problems (dec n))) 
@@ -60,11 +59,10 @@
          (dec n))))
 
 (defn prob-num []
-  (let [problems (read-string (slurp "progress.edn"))]
     (loop [n 1]
       (if (get-answer n)
           (recur (inc n))
-          n))))
+          n)))
 
 (defn print-problem [n]
   (println (str "\n#" n ": " (:title (get-problem n))))
@@ -76,3 +74,6 @@
   (let [n (read-string (slurp "prob-num"))]
     (print-problem n)
     (replacer n)))
+
+(comment
+  (-main))
