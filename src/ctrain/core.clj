@@ -1,10 +1,9 @@
 (ns ctrain.core
-  (:require [clojure.string :as str]))
+  (:require 
+   [clojure.string :as str]
+   [ctrain.problems :refer [problems]]))
 
 (declare -main)
-
-(def problems
-  (read-string (slurp "resources/problems.edn")))
 
 (defn check [results]
     (when (empty? results)

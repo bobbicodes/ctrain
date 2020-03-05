@@ -1,4 +1,7 @@
-[{:_id 1 :title "Nothing but the Truth"
+(ns ctrain.problems)
+
+(def problems 
+  [{:_id 1 :title "Nothing but the Truth"
   :tests ["(= __ true)"]
   :description "Complete the expression so it will evaluate to true."}
 
@@ -452,4 +455,18 @@ WARNING: Some of the test cases may timeout if you write an inefficient solution
           "(= (__ \"leaveMeAlone\") \"leaveMeAlone\")"]
   :description "When working with java, you often need to create an object with fieldsLikeThis,
 but you'd rather work with a hashmap that has :keys-like-this until it's time to convert.
-Write a function which takes lower-case hyphen-separated strings and converts them to camel-case strings."}]
+Write a function which takes lower-case hyphen-separated strings and converts them to camel-case strings."}
+ 
+ {:_id 103 :title "Generating k-combinations"
+  :tests ["(= (k 1 #{4 5 6}) #{#{4} #{5} #{6}})"
+         "(= (k 10 #{4 5 6}) #{})"
+         "(= (k 2 #{0 1 2}) #{#{0 1} #{0 2} #{1 2}})"
+         "(= (k 3 #{0 1 2 3 4}) #{#{0 1 2} #{0 1 3} #{0 1 4} #{0 2 3} #{0 2 4}
+                                     #{0 3 4} #{1 2 3} #{1 2 4} #{1 3 4} #{2 3 4}})"
+         "(= (k 4 #{[1 2 3] :a \"abc\" \"efg\"}) #{#{[1 2 3] :a \"abc\" \"efg\"}})"
+         "(= (k 2 #{[1 2 3] :a \"abc\" \"efg\"}) #{#{[1 2 3] :a} #{[1 2 3] \"abc\"} #{[1 2 3] \"efg\"}
+                                                  #{:a \"abc\"} #{:a \"efg\"} #{\"abc\" \"efg\"}}))"]
+  :description "Given a sequence S consisting of n elements generate all k-combinations of S,
+i.e. generate all possible sets consisting of k distinct elements taken from S.
+The number of k-combinations for a sequence is equal to the binomial coefficient."}
+ ])
