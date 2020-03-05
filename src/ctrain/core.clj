@@ -1,15 +1,14 @@
 (ns ctrain.core
-  (:require [clojure.edn :as edn]
-            [clojure.string :as str]))
+  (:require [clojure.string :as str]))
 
 (declare -main)
 
 (def problems
-  (edn/read-string (slurp "resources/problems.edn")))
+  (read-string (slurp "resources/problems.edn")))
 
 (defn check [results]
     (when (empty? results)
-      (spit "resources/prob-num" (inc (edn/read-string (slurp "resources/prob-num"))))
+      (spit "resources/prob-num" (inc (read-string (slurp "resources/prob-num"))))
       (println "\nNICE! Here's the next one:")
       (Thread/sleep 1500)
       (-main))
@@ -27,7 +26,7 @@
         (rest answers)
         (conj results
           (try
-             (eval (edn/read-string (first answers)))
+             (eval (read-string (first answers)))
              (catch Exception e
                (println (str "Error evaluating: " (class e) ":" (.getMessage e)))
                (.printStackTrace e)
