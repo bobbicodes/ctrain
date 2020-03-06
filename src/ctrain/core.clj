@@ -33,20 +33,11 @@
         (= false (first results)) (reject)
         :else (recur (rest results))))
 
-(defn evaluate [answers]
-  (loop [answers answers
-         results []]
-    (if (empty? answers)
-      (check results)
-      (recur
-       (rest answers)
-       (conj results
-             (try
-               (eval (read-string (first answers)))
-               (catch Exception e
-                 (println (str "Error evaluating: " (class e) ":" (.getMessage e)))
-                 (.printStackTrace e)
-                 false)))))))
+(defn safe-eval [ans]
+  (try (eval (read-string ans))
+    (catch Exception e
+      (println (str "\nError evaluating: " (class e) ":" (.getMessage e)))
+      false)))
 
 (defn submit []
   (let [n (read-string (slurp "resources/prob-num"))
@@ -54,7 +45,7 @@
     (loop [tests    (:tests (problems (- n 1)))
            replaced []]
       (if (empty? tests)
-        (evaluate replaced)
+        (check (reduce conj [] (map safe-eval replaced)))
         (recur (rest tests) (conj replaced (str/replace (first tests) "__" ans)))))))
 
 (defn -main []
