@@ -6,12 +6,11 @@
 
 (declare -main)
 
-(defn prompt []
-  (let [n (read-string (slurp "resources/prob-num"))]
+(defn prompt [n]
     (println (str "\n#" n ": " (:title (nth problems (dec n)))))
     (println (str "\n" (:description (nth problems (dec n))) "\n"))
     (run! println (:tests (nth problems (dec n))))
-    (spit (str "resources/answers/" n) (read-line))))
+    (spit (str "resources/answers/" n) (read-line)))
 
 (defn reject []
   (println "\nSorry, try again...")
@@ -26,9 +25,9 @@
   (-main))
 
 (defn check [results]
-  (cond (empty? results) (next-prob!)
-        (= false (first results)) (reject)
-        :else (recur (rest results))))
+  (if (every? true? results)
+    (next-prob!)
+    (reject)))
 
 (defn safe-eval [ans]
   (try (eval (read-string ans))
@@ -36,20 +35,14 @@
       (println (.getMessage e))
       false)))
 
-(defn submit []
-  (let [n (read-string (slurp "resources/prob-num"))
-        ans (slurp (str "resources/answers/" n))]
-    (if (= ans "")
-      (reject)
-      (loop [tests    (:tests (problems (- n 1)))
-             replaced []]
-        (if (empty? tests)
-          (check (reduce conj [] (map safe-eval replaced)))
-          (recur (rest tests) (conj replaced (str/replace (first tests) "__" ans))))))))
+(defn submit [ans n]
+  (let [tests (:tests (problems (dec n)))]
+    (if (= ans "") (reject)
+        (check (map safe-eval 
+                    (map #(str/replace % "__" ans) 
+                         tests))))))
 
 (defn -main []
-  (prompt)
-  (submit))
-
-(comment
-)
+  (let [n (read-string (slurp "resources/prob-num"))]
+    (prompt n)
+    (submit (slurp (str "resources/answers/" n)) n)))
