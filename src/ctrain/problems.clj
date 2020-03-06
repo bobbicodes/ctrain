@@ -713,6 +713,73 @@ for use outside the scope in which it is defined.
                "(= [1 8 27 64] (map (__ 3) [1 2 3 4]))"
                "(= [1 2 4 8 16] (map #((__ %) 2) [0 1 2 3 4]))"]}
 
+{:_id         108
+ :title       "Lazy Searching"
+ :description "Given any number of sequences, each sorted from smallest to largest,
+find the smallest single number which appears in all of the sequences.
+The sequences may be infinite, so be careful to search lazily."
+ :tests       ["(= 3 (__ [3 4 5]))"
+                 "(= 4 (__ [1 2 3 4 5 6 7] [0.5 3/2 4 19]))"
+                 "(= 64 (__ (map #(* % % %) (range))
+                                 (filter #(zero? (bit-and % (dec %))) (range))
+                                 (iterate inc 20)))"
+               "(= 7 (__ (range) (range 0 100 7/6) [2 3 5 7 11 13]))"]}
+
+{:_id         110
+ :title       "Sequence of pronunciations"
+ :description "Write a function that returns a lazy sequence of \"pronunciations\" of a sequence of numbers.
+A pronunciation of each element in the sequence consists of the number of repeating identical numbers and the number itself.
+For example, [1 1] is pronounced as [2 1] (\"two ones\"), which in turn is pronounced as [1 2 1 1] (\"one two, one one\") .
+Your function should accept an initial sequence of numbers, and return an infinite lazy sequence of pronunciations,
+each element being a pronunciation of the previous element."
+ :tests       ["(= [[1 1] [2 1] [1 2 1 1]] (take 3 (__ [1])))"
+               "(= [3 1 2 4] (first (__[1 1 1 4 4])))"
+               "(= [1 1 1 3 2 1 3 2 1 1] (nth (__ [1]) 6))"
+               "(= 338 (count (nth (__ [3 2]) 15)))"]}
+
+{:_id         111
+ :title       "Crossword puzzle"
+ :description "Write a function that takes a string and a partially-filled crossword puzzle board,
+and determines if the input string can be legally placed onto the board.
+
+The crossword puzzle board consists of a collection of partially-filled rows.
+Empty spaces are denoted with an underscore (_),
+unusable spaces are denoted with a hash symbol (#),
+and pre-filled spaces have a character in place;
+the whitespace characters are for legibility and should be ignored.
+
+For a word to be legally placed on the board:
+
+It may use empty spaces (underscores)
+It may use but must not conflict with any pre-filled characters.
+It must not use any unusable spaces (hashes).
+There must be no empty spaces (underscores) or extra characters
+before or after the word (the word may be bound by unusable spaces though).
+Characters are not case-sensitive.
+Words may be placed vertically (proceeding top-down only),
+or horizontally (proceeding left-right only)."
+ :tests       ["(= true  (__ \"the\" [\"_ # _ _ e\"]))"
+               "(= false (__ \"the\" [\"c _ _ _\"                    \"d _ # e\"                    \"r y _ _\"]))"
+               "(= true  (__ \"joy\" [\"c _ _ _\"                    \"d _ # e\"                    \"r y _ _\"]))"
+               "(= false (__ \"joy\" [\"c o n j\"                    \"_ _ y _\"                    \"r _ _ #\"]))"
+               "(= true  (__ \"clojure\" [\"_ _ _ # j o y\"
+                                          \"_ _ o _ _ _ _\"
+                                           \"_ _ f _ # _ _\"]))"]}
+
+ {:_id         112
+  :title       "Sequs Horribilis"
+  :description "Create a function which takes an integer and a nested collection of integers as arguments.
+Analyze the elements of the input collection and return a sequence which maintains the nested structure,
+and which includes all elements starting from the head whose sum is less than or equal to the input integer."
+  :tests       ["(=  (__ 10 [1 2 [3 [4 5] 6] 7])    '(1 2 (3 (4))))"
+                "(=  (__ 30 [1 2 [3 [4 [5 [6 [7 8]] 9]] 10] 11])    '(1 2 (3 (4 (5 (6 (7)))))))"
+                "(=  (__ 9 (range))    '(0 1 2 3))"
+                "(=  (__ 1 [[[[[1]]]]])    '(((((1))))))"
+                "(=  (__ 0 [1 2 [3 [4 5] 6] 7])    '())"
+                "(=  (__ 0 [0 0 [0 [0]]])    '(0 0 (0 (0))))"
+                "(=  (__ 1 [-10 [1 [2 3 [4 5 [6 7 [8]]]]]])
+                        '(-10 (1 (2 3 (4)))))"]}
+ 
  ])
 
 {:_id         nil
