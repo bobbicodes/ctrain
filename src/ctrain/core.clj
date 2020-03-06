@@ -36,11 +36,10 @@
       false)))
 
 (defn submit [ans n]
-  (let [tests (:tests (problems (dec n)))]
+  (let [tests (:tests (problems (dec n)))
+        replaced (map #(str/replace % "__" ans) tests)]
     (if (= ans "") (reject)
-        (check (map safe-eval 
-                    (map #(str/replace % "__" ans) 
-                         tests))))))
+        (check (map safe-eval replaced)))))
 
 (defn -main []
   (let [n (read-string (slurp "resources/prob-num"))]
