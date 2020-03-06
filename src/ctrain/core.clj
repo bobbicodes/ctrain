@@ -33,7 +33,7 @@
 (defn safe-eval [ans]
   (try (eval (read-string ans))
     (catch Exception e
-      (println (str "\nError evaluating: " (class e) ":" (.getMessage e)))
+      (println (.getMessage e))
       false)))
 
 (defn submit []
