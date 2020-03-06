@@ -663,6 +663,56 @@ Given an integer smaller than 4000,
 return the corresponding roman numeral in uppercase,
 adhering to the subtractive principle."}
  
+{:_id         105
+ :title       "Identify keys and values"
+ :description "Given an input sequence of keywords and numbers,
+create a map such that each key in the map is a keyword,
+and the value is a sequence of all the numbers (if any)
+between it and the next keyword in the sequence."
+ :tests       ["(= {} (__ []))"
+               "(= {:a [1]} (__ [:a 1]))"
+               "(= {:a [1]
+                         :b [2]} (__ [:a 1, :b 2]))"
+               "(= {:a [1 2 3]
+                         :b []
+                         :c [4]} (__ [:a 1 2 3 :b :c 4]))"]}
+ 
+{:_id         106
+ :title       "Number Maze"
+ :description "Given a pair of numbers, the start and end point,
+find a path between the two using only three possible operations:
+
+1. double
+2. halve (odd numbers cannot be halved)
+3. add 2
+
+Find the shortest path through the “maze”.
+Because there are multiple shortest paths,
+you must return the length of the shortest path, not the path itself."
+ :tests       ["(= 1 (__ 1 1))"
+               "(= 3 (__ 3 12))"
+               "(= 3 (__ 12 3))"
+               "(= 3 (__ 5 9))"
+               "(= 9 (__ 9 2))"
+               "(= 5 (__ 9 12))"]}
+
+{:_id         107
+ :title       "Simple closures"
+ :description "Lexical scope and first-class functions are two of the most
+basic building blocks of a functional language like Clojure.
+When you combine the two together, you get something very powerful called lexical closures.
+With these, you can exercise a great deal of control over the lifetime of your local bindings,
+saving their values for use later, long after the code you're running now has finished.
+
+It can be hard to follow in the abstract, so let's build a simple closure.
+Given a positive integer n, return a function (f x) which computes xn.
+Observe that the effect of this is to preserve the value of n
+for use outside the scope in which it is defined.
+"
+ :tests       ["(= 256 ((__ 2) 16), ((__ 8) 2))"
+               "(= [1 8 27 64] (map (__ 3) [1 2 3 4]))"
+               "(= [1 2 4 8 16] (map #((__ %) 2) [0 1 2 3 4]))"]}
+
  ])
 
 {:_id         nil
